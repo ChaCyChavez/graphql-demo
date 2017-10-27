@@ -1,0 +1,17 @@
+{
+  "name": "graphql-demo",
+  "version": "1.0.0",
+  "description": "simple graphql server",
+  "main": "server.js",
+  "scripts": {
+    "dev:server": "nodemon server.js"
+  },
+  "author": "Charles Cyrus S.J. Chavez",
+  "license": "MIT",
+  "dependencies": {
+    "express": "^4.16.2",
+    "express-graphql": "^0.6.11",
+    "graphql": "^0.11.7",
+    "nodemon": "^1.12.1"
+  }
+}
