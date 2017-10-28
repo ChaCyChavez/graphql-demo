@@ -9,7 +9,7 @@ const {
 
 // Hardcoded data
 
-const customers = [
+const students = [
 	{
 		id: '1',
 		name: 'John Doe', 
@@ -50,20 +50,20 @@ const customers = [
 
 
 // Root Query
-const CustomerType = new GraphQLObjectType({
-	name: 'Customer',
+const StudentType = new GraphQLObjectType({
+	name: 'Student',
 	fields: () => ({
 		id: { type: GraphQLString },
 		name: { type: GraphQLString },
 		email: { type: GraphQLString },
 		age: { type: GraphQLInt },
 		friends: {
-			type: new GraphQLList(CustomerType),
-			resolve(customer){
+			type: new GraphQLList(StudentType),
+			resolve(student){
 				let friends = []
 
-				for(let i = 0; i < customer.friends.length; i++) {
-					friends.push(customers[parseInt(customer.friends[i]) - 1])
+				for(let i = 0; i < student.friends.length; i++) {
+					friends.push(students[parseInt(student.friends[i]) - 1])
 				}
 
 				return friends;
@@ -75,23 +75,23 @@ const CustomerType = new GraphQLObjectType({
 const RootQuery = new GraphQLObjectType({
 	name: 'RootQueryType',
 	fields: {
-		customer: {
-			type: CustomerType,
+		student: {
+			type: StudentType,
 			args: {
 				id: { type: GraphQLString }
 			},
 			resolve(parentValue, args) {
-				for(let i = 0; i < customers.length; i++) {
-					if(customers[i].id === args.id) {
-						return customers[i];
+				for(let i = 0; i < students.length; i++) {
+					if(students[i].id === args.id) {
+						return students[i];
 					}
 				}
 			}
 		},
-		customers: {
-      type: new GraphQLList(CustomerType),
+		students: {
+      type: new GraphQLList(StudentType),
       resolve(parentValue, args) {
-      	return customers;
+      	return students;
       }
     }
 	}
@@ -100,8 +100,8 @@ const RootQuery = new GraphQLObjectType({
 const mutation = new GraphQLObjectType({
 	name: 'Mutation',
 	fields: {
-		addCustomer: {
-			type: CustomerType,
+		addStudent: {
+			type: StudentType,
 			args: {
 				id: { type: new GraphQLNonNull(GraphQLString) },
 				name: { type: new GraphQLNonNull(GraphQLString) },
@@ -117,14 +117,14 @@ const mutation = new GraphQLObjectType({
 					age: args.age
 				};
 
-				customers.push(obj);
+				students.push(obj);
 
 				return obj;
 			}
 		},
 
-		updateCustomer: {
-			type: CustomerType,
+		updateStudent: {
+			type: StudentType,
 			args: {
 				id: { type: new GraphQLNonNull(GraphQLString) },
 				name: { type: GraphQLString },
@@ -133,34 +133,34 @@ const mutation = new GraphQLObjectType({
 			},
 
 			resolve(parentValue, args) {
-				for(let i = 0; i < customers.length; i++) {
-					if(customers[i].id === args.id) {
+				for(let i = 0; i < students.length; i++) {
+					if(students[i].id === args.id) {
 						if(args.name) {
-							customers[i].name = args.name
+							students[i].name = args.name
 						}
 						if(args.email){
-							customers[i].email = args.email
+							students[i].email = args.email
 						}
 						if(args.age){
-							customers[i].age = args.age
+							students[i].age = args.age
 						}
 
-						return customers[i];
+						return students[i];
 					}
 				}
 			}
 		},
 
-		deleteCustomer: {
-			type: CustomerType,
+		deleteStudent: {
+			type: StudentType,
 			args: {
 				id: { type: new GraphQLNonNull(GraphQLString) }
 			},
 
 			resolve(parentValue, args) {
-				for(let i = 0; i < customers.length; i++) {
-					if(customers[i].id === args.id) {
-						customers.splice(i, 1)
+				for(let i = 0; i < students.length; i++) {
+					if(students[i].id === args.id) {
+						students.splice(i, 1)
 					}
 				}
 			}
